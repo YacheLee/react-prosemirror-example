@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from 'react';
-import {DOMParser} from "prosemirror-model"
 import {schema} from "prosemirror-schema-basic"
 import {EditorState} from "prosemirror-state"
 import {EditorView} from "prosemirror-view"
@@ -10,8 +9,13 @@ function App() {
     const content = useRef(null);
 
     useEffect(() => {
+        let doc = schema.node('doc', null, [
+            schema.node('paragraph', null, [schema.text("One,")]),
+            schema.node('horizontal_rule'),
+            schema.node('paragraph', null, [schema.text("Two!")])
+        ])
         let state = EditorState.create({
-            doc: DOMParser.fromSchema(schema).parse(content.current)
+            doc
         })
         let view = new EditorView(editor.current, {state, dispatchTransaction(transaction){
             console.log('Document size went from ', transaction.before.content.size, 'to', transaction.doc.content.size);
@@ -23,11 +27,14 @@ function App() {
   return (
     <div className="ProseMirror-example-setup-style">
         <div ref={content}>
-            asdakljl
-            adsada
-            ad
-            嘿嘿嘿
-            安安安
+            <p>
+                This is
+                <strong>
+                    strong text with
+                    <em>emphasis</em>
+                </strong>
+            </p>
+            <hr />
         </div>
       <div ref={editor} />
     </div>
