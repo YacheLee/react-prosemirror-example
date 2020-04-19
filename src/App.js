@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {schema} from "prosemirror-schema-basic"
+import {baseKeymap} from "prosemirror-commands";
 import {history, redo, undo} from "prosemirror-history";
 import {keymap} from "prosemirror-keymap";
 import {EditorState} from "prosemirror-state"
@@ -14,7 +15,8 @@ function App() {
             schema,
             plugins: [
                 history(),
-                keymap({'Mod-z': undo, 'Mod-y': redo})
+                keymap({'Mod-z': undo, 'Mod-y': redo}),
+                keymap(baseKeymap)
             ]
         })
         let view = new EditorView(editor.current, {state, dispatchTransaction(transaction){
