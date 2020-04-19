@@ -1,10 +1,7 @@
 import React, {useEffect, useRef} from 'react';
+import {schema} from "prosemirror-schema-basic"
 import {EditorState} from "prosemirror-state"
 import {EditorView} from "prosemirror-view"
-import {DOMParser, Schema} from "prosemirror-model"
-import {schema} from "prosemirror-schema-basic"
-import {addListNodes} from "prosemirror-schema-list"
-import {exampleSetup} from "prosemirror-example-setup"
 import './App.css';
 
 function App() {
@@ -12,16 +9,8 @@ function App() {
     const content = useRef(null);
 
     useEffect(() => {
-        const mySchema = new Schema({
-            nodes: addListNodes(schema.spec.nodes, "paragraph block*", "block"),
-            marks: schema.spec.marks
-        })
-        window.view = new EditorView(editor.current, {
-            state: EditorState.create({
-                doc: DOMParser.fromSchema(mySchema).parse(content.current),
-                plugins: exampleSetup({schema: mySchema})
-            })
-        })
+        let state = EditorState.create({schema})
+        let view = new EditorView(editor.current, {state})
     });
   return (
     <div className="ProseMirror-example-setup-style">
