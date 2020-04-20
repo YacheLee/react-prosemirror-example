@@ -2,6 +2,8 @@ import React, {Fragment, useCallback, useContext, useEffect, useRef} from 'react
 import PropTypes from 'prop-types';
 import {Schema} from 'prosemirror-model';
 import {EditorState} from "prosemirror-state"
+import {history, redo, undo} from "prosemirror-history";
+import {keymap} from "prosemirror-keymap";
 import {EditorView} from "prosemirror-view"
 import EditorViewContext from '../../contexts/EditorViewContext';
 
@@ -38,7 +40,11 @@ function Editor({value, onChange}) {
             });
             const editorState = EditorState.create({
                 schema,
-                doc: schema.nodeFromJSON(value)
+                doc: schema.nodeFromJSON(value),
+                plugins: [
+                    history(),
+                    keymap({'Mod-z': undo, 'Mod-y': redo})
+                ]
             })
             const editorView = new EditorView(editor.current, {
                 state: editorState,
