@@ -22,7 +22,11 @@ function isHeadingActive(editorView, level){
 }
 
 function getHeadingAttribute(editorView){
-    const {type, attrs} = getTopLevelNode(editorView);
+    const node = getTopLevelNode(editorView);
+    if(!node){
+        return "";
+    }
+    const {type, attrs} = node;
     if(type.name==='heading'){
         return attrs.level;
     }
@@ -34,7 +38,28 @@ function Toolbar() {
 
     return (
         <div>
-            <span>{getHeadingAttribute(editorView)}</span>
+            <select value={getHeadingAttribute(editorView)} readOnly={true} onChange={(e)=>{
+                e.preventDefault();
+                editorView.focus();
+                const schema = getSchema(editorView);
+
+                let command;
+                if(e.target.value===''){
+                    command = setBlockType(schema.nodes.paragraph);
+                }
+                else{
+                    command = setBlockType(schema.nodes.heading, {level: e.target.value});
+                }
+                command(editorView.state, editorView.dispatch);
+            }}>
+                <option value="">Normal text</option>
+                <option value={1}>Heading 1</option>
+                <option value={2}>Heading 2</option>
+                <option value={3}>Heading 3</option>
+                <option value={4}>Heading 4</option>
+                <option value={5}>Heading 5</option>
+                <option value={6}>Heading 6</option>
+            </select>
             <button style={{border: `solid ${getHeadingAttribute(editorView)} ${isHeadingActive(editorView, 1) ? "5px" : "1px"} blue`}} onClick={(e)=>{
                 e.preventDefault();
                 editorView.focus();
