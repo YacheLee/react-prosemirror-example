@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import {toggleMark} from 'prosemirror-commands';
+import {setBlockType, toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {getType, markActive} from '../../utils';
+import {getSchema, getType, markActive} from '../../utils';
 
 function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -20,6 +20,13 @@ function Toolbar() {
 
     return (
         <div>
+            <button onClick={(e)=>{
+                e.preventDefault();
+                editorView.focus();
+                const schema = getSchema(editorView);
+                const command = setBlockType(schema.nodes.heading, {level: 1});
+                command(editorView.state, editorView.dispatch)
+            }}>H</button>
             <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
             <button
                 style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}
