@@ -16,6 +16,7 @@ function markActive(state, type) {
 
 function RichTextEditor() {
     const [isLoading, setIsLoading] = useState(false);
+    const [isActive, setIsActive] = useState(false);
     const [schema, setSchema] = useState(null);
     const [editorView, setEditorView] = useState(null);
     const editor = useRef(null);
@@ -43,7 +44,15 @@ function RichTextEditor() {
             const _editorState = EditorState.create({
                 schema: _schema,
             })
-            const _editorView = new EditorView(editor.current, {state: _editorState})
+            const _editorView = new EditorView(editor.current, {
+                state: _editorState,
+                autofocus: true,
+                dispatchTransaction(transaction){
+                    let newState = _editorView.state.apply(transaction);
+                    _editorView.updateState(newState);
+                    setIsActive(!!markActive(_editorView.state, _schema.marks.strong));
+                }}
+            )
             setSchema(_schema);
             setEditorView(_editorView);
             setIsLoading(false);
@@ -55,10 +64,10 @@ function RichTextEditor() {
             {isLoading ?
                 <div>Loading</div> :
                 <div className="ProseMirror-example-setup-style">
-                    <button onClick={()=>{
+                    <button style={{border: `solid ${isActive ? "5px" : "1px"} blue`}} onClick={(e)=>{
+                        e.preventDefault();
                         const command = toggleMark(schema.marks.strong);
                         command(editorView.state, editorView.dispatch, editorView);
-                        console.log(markActive(editorView.state, schema.marks.strong));
                     }}>B</button>
                 </div>
             }
