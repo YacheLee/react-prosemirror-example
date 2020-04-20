@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {setBlockType, toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {getSchema, getType, markActive} from '../../utils';
+import {getSchema, getTopLevelNode, getType, markActive} from '../../utils';
 
 function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -15,10 +15,18 @@ function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
-function isHeadingActive(editorView){
+function isHeadingActive(editorView, level){
     const schema = getSchema(editorView);
-    const command = setBlockType(schema.nodes.heading, {level: 1});
+    const command = setBlockType(schema.nodes.heading, {level});
     return !command(editorView.state, null, editorView);
+}
+
+function getHeadingAttribute(editorView){
+    const {type, attrs} = getTopLevelNode(editorView);
+    if(type.name==='heading'){
+        return attrs.level;
+    }
+    return "";
 }
 
 function Toolbar() {
@@ -26,13 +34,14 @@ function Toolbar() {
 
     return (
         <div>
-            <button style={{border: `solid ${isHeadingActive(editorView) ? "5px" : "1px"} blue`}} onClick={(e)=>{
+            <span>{getHeadingAttribute(editorView)}</span>
+            <button style={{border: `solid ${getHeadingAttribute(editorView)} ${isHeadingActive(editorView, 1) ? "5px" : "1px"} blue`}} onClick={(e)=>{
                 e.preventDefault();
                 editorView.focus();
 
                 const schema = getSchema(editorView);
                 let command;
-                if(isHeadingActive(editorView)){
+                if(isHeadingActive(editorView, 1)){
                     command = setBlockType(schema.nodes.paragraph);
                 }
                 else{
@@ -40,6 +49,20 @@ function Toolbar() {
                 }
                 command(editorView.state, editorView.dispatch);
             }}>H1</button>
+            <button style={{border: `solid ${getHeadingAttribute(editorView)} ${isHeadingActive(editorView, 2) ? "5px" : "1px"} blue`}} onClick={(e)=>{
+                e.preventDefault();
+                editorView.focus();
+
+                const schema = getSchema(editorView);
+                let command;
+                if(isHeadingActive(editorView, 2)){
+                    command = setBlockType(schema.nodes.paragraph);
+                }
+                else{
+                    command = setBlockType(schema.nodes.heading, {level: 2});
+                }
+                command(editorView.state, editorView.dispatch);
+            }}>H2</button>
             <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
             <button
                 style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}

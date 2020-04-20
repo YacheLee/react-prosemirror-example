@@ -19,3 +19,7 @@ export function getMarks(editorView){
 export function getType(editorView, name=""){
     return getMarks(editorView)[name];
 }
+
+export function getTopLevelNode(editorView){
+    return editorView.state.selection.$from.node(1);
+}
