@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {setBlockType, toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
 import {getSchema, getType, markActive} from '../../utils';
@@ -15,26 +15,31 @@ function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
+function isHeadingActive(editorView){
+    const schema = getSchema(editorView);
+    const command = setBlockType(schema.nodes.heading, {level: 1});
+    return !command(editorView.state, null, editorView);
+}
+
 function Toolbar() {
     const {editorView} = useContext(EditorViewContext);
-    const [isHeading, setIsHeading] = useState(true);
 
     return (
         <div>
-            <button onClick={(e)=>{
+            <button style={{border: `solid ${isHeadingActive(editorView) ? "5px" : "1px"} blue`}} onClick={(e)=>{
                 e.preventDefault();
                 editorView.focus();
+
                 const schema = getSchema(editorView);
                 let command;
-                if(isHeading){
+                if(isHeadingActive(editorView)){
                     command = setBlockType(schema.nodes.paragraph);
                 }
                 else{
-                    command = setBlockType(schema.nodes.heading, {level: isHeading? 0: 1});
+                    command = setBlockType(schema.nodes.heading, {level: 1});
                 }
-                setIsHeading(!isHeading);
-                command(editorView.state, editorView.dispatch)
-            }}>H</button>
+                command(editorView.state, editorView.dispatch);
+            }}>H1</button>
             <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
             <button
                 style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}
