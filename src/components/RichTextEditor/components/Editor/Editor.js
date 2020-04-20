@@ -11,7 +11,7 @@ function Editor({value, onChange}) {
 
     const init = useCallback(()=>{
         if(!editorView){
-            const _schema = new Schema({
+            const schema = new Schema({
                 nodes: {
                     doc: {content: "paragraph+"},
                     paragraph: {
@@ -32,20 +32,20 @@ function Editor({value, onChange}) {
                     }
                 }
             });
-            const _editorState = EditorState.create({
-                schema: _schema,
-                doc: _schema.nodeFromJSON(value)
+            const editorState = EditorState.create({
+                schema,
+                doc: schema.nodeFromJSON(value)
             })
-            const _editorView = new EditorView(editor.current, {
-                state: _editorState,
+            const editorView = new EditorView(editor.current, {
+                state: editorState,
                 autofocus: true,
                 dispatchTransaction(transaction){
-                    const newState = _editorView.state.apply(transaction);
-                    _editorView.updateState(newState);
+                    const newState = editorView.state.apply(transaction);
+                    editorView.updateState(newState);
                     onChange(newState.toJSON());
                 }}
             )
-            setEditorView(_editorView);
+            setEditorView(editorView);
         }
     }, [editorView, setEditorView, value, onChange]);
 
