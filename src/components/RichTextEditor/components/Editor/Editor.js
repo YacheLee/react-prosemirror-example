@@ -68,21 +68,7 @@ function Editor({value, onChange}) {
                             {
                                 style: 'color',
                                 getAttrs: function (value) {
-                                    console.log(value);
-                                    return false;
-                                    // var value = maybeValue;
-                                    // var hexColor;
-                                    // if (value.match(/^rgb/i)) {
-                                    //     hexColor = colors_1.rgbToHex(value);
-                                    // }
-                                    // else if (value[0] === '#') {
-                                    //     hexColor = value.toLowerCase();
-                                    // }
-                                    // // else handle other colour formats
-                                    // return hexColor &&
-                                    // (exports.colorPalette.has(hexColor) || exports.colorPaletteExperimental.has(hexColor))
-                                    //     ? { color: hexColor }
-                                    //     : false;
+                                    return {color: value};
                                 },
                             },
                         ],
