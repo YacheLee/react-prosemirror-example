@@ -25,6 +25,7 @@ function Editor({value, onChange}) {
                 },
                 marks: {
                     strong: {
+                        parseDOM: [{tag: "strong"}, {tag: "b"}],
                         toDOM: () => ['strong', 0]
                     },
                     em: {
@@ -32,9 +33,11 @@ function Editor({value, onChange}) {
                         toDOM: () => ['em', 0]
                     },
                     u: {
+                        parseDOM: [{tag: "u"}],
                         toDOM: () => ['u', 0]
                     },
                     del: {
+                        parseDOM: [{tag: "del"}],
                         toDOM: () => ['del', 0]
                     }
                 }
@@ -54,7 +57,7 @@ function Editor({value, onChange}) {
                 dispatchTransaction(transaction){
                     const newState = editorView.state.apply(transaction);
                     editorView.updateState(newState);
-                    onChange(newState.toJSON());
+                    onChange(newState.toJSON().doc);
                 }}
             )
             setEditorView(editorView);
