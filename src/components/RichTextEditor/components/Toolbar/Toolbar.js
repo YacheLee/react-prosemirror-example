@@ -1,11 +1,11 @@
 import React, {useContext} from 'react';
 import {toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {markActive} from '../../utils';
+import {getType, markActive} from '../../utils';
 
 function Toolbar() {
     const {editorView} = useContext(EditorViewContext);
-    const type = editorView.state.schema.marks.strong;
+    const type = getType(editorView, "strong");
     const isActive = !!markActive(editorView.state, type);
 
     return (

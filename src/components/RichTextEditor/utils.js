@@ -7,3 +7,15 @@ export function markActive(state, type) {
     if (empty) { return type.isInSet(state.storedMarks || $from.marks()) }
     else { return state.doc.rangeHasMark(from, to, type) }
 }
+
+export function getSchema(editorView){
+    return editorView.state.schema;
+}
+
+export function getMarks(editorView){
+    return getSchema(editorView).marks;
+}
+
+export function getType(editorView, name=""){
+    return getMarks(editorView)[name];
+}
