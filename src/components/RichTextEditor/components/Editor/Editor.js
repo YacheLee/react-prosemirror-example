@@ -4,6 +4,7 @@ import {Schema} from 'prosemirror-model';
 import {EditorState} from "prosemirror-state"
 import {history, redo, undo} from "prosemirror-history";
 import {keymap} from "prosemirror-keymap";
+import {baseKeymap} from "prosemirror-commands";
 import {EditorView} from "prosemirror-view"
 import EditorViewContext from '../../contexts/EditorViewContext';
 
@@ -43,7 +44,8 @@ function Editor({value, onChange}) {
                 doc: schema.nodeFromJSON(value),
                 plugins: [
                     history(),
-                    keymap({'Mod-z': undo, 'Mod-y': redo})
+                    keymap({'Mod-z': undo, 'Mod-y': redo}),
+                    keymap(baseKeymap)
                 ]
             })
             const editorView = new EditorView(editor.current, {
