@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import RichTextEditor from './components/RichTextEditor';
 
-const value = {
+const defaultValue = {
     type: "doc",
-    content:[{"type":"paragraph","content":[{"type":"text","text":"asdadad"}]}]
+    content:[{"type":"paragraph","content":[{"type":"text","text":"中文測試"}]}]
 };
+
 function App() {
+    const [value, setValue] = useState(defaultValue);
     return (
-        <RichTextEditor value={value} onChange={(value)=>{
-            console.log(value);
-        }} />
+        <div>
+            <RichTextEditor value={value} onChange={(value)=>{
+                setValue(value);
+            }} />
+            <div style={{color: "green"}}>
+                {JSON.stringify(value)}
+            </div>
+        </div>
+
     );
 }
 

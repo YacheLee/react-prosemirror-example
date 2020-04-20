@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Schema} from 'prosemirror-model';
 import {EditorState} from "prosemirror-state"
@@ -18,13 +18,12 @@ function markActive(state, type) {
 function RichTextEditor({value, onChange}) {
     const [isLoading, setIsLoading] = useState(false);
     const [isActive, setIsActive] = useState(false);
-    const [editorState, setEditorState] = useState(null);
     const [schema, setSchema] = useState(null);
     const [editorView, setEditorView] = useState(null);
     const editor = useRef(null);
 
-    useEffect(() => {
-        if(!isLoading){
+    const init = useCallback(()=>{
+        if(!isLoading && !editorView){
             setIsLoading(true);
             const _schema = new Schema({
                 nodes: {
@@ -43,6 +42,8 @@ function RichTextEditor({value, onChange}) {
                     }
                 }
             });
+            console.log(_schema);
+
             const _editorState = EditorState.create({
                 schema: _schema,
                 doc: _schema.nodeFromJSON(value)
@@ -53,7 +54,6 @@ function RichTextEditor({value, onChange}) {
                 dispatchTransaction(transaction){
                     let newState = _editorView.state.apply(transaction);
                     _editorView.updateState(newState);
-                    setEditorState(newState);
                     setIsActive(!!markActive(_editorView.state, _schema.marks.strong));
                     onChange(newState.toJSON());
                 }}
@@ -62,7 +62,11 @@ function RichTextEditor({value, onChange}) {
             setEditorView(_editorView);
             setIsLoading(false);
         }
-    }, [isLoading]);
+    }, [isLoading, editorView, value, onChange]);
+
+    useEffect(() => {
+        init()
+    }, [init]);
 
     return (
         <Fragment>
@@ -75,9 +79,6 @@ function RichTextEditor({value, onChange}) {
                         const command = toggleMark(schema.marks.strong);
                         command(editorView.state, editorView.dispatch, editorView);
                     }}>B</button>
-                    <div style={{color: "green"}}>
-                        {editorState && JSON.stringify(editorState.toJSON())}
-                    </div>
                 </div>
             }
             <div style={{border: "solid 1px red"}} ref={editor} />
