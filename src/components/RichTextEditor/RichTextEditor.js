@@ -17,6 +17,7 @@ function markActive(state, type) {
 function RichTextEditor() {
     const [isLoading, setIsLoading] = useState(false);
     const [isActive, setIsActive] = useState(false);
+    const [editorState, setEditorState] = useState(null);
     const [schema, setSchema] = useState(null);
     const [editorView, setEditorView] = useState(null);
     const editor = useRef(null);
@@ -50,6 +51,7 @@ function RichTextEditor() {
                 dispatchTransaction(transaction){
                     let newState = _editorView.state.apply(transaction);
                     _editorView.updateState(newState);
+                    setEditorState(newState);
                     setIsActive(!!markActive(_editorView.state, _schema.marks.strong));
                 }}
             )
@@ -70,6 +72,9 @@ function RichTextEditor() {
                         const command = toggleMark(schema.marks.strong);
                         command(editorView.state, editorView.dispatch, editorView);
                     }}>B</button>
+                    <div style={{color: "green"}}>
+                        {editorState && JSON.stringify(editorState.toJSON())}
+                    </div>
                 </div>
             }
             <div style={{border: "solid 1px red"}} ref={editor} />
