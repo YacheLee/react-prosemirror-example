@@ -5,11 +5,11 @@ import {EditorView} from "prosemirror-view"
 import {toggleMark} from "prosemirror-commands"
 
 function markActive(state, type) {
-    var ref = state.selection;
-    var from = ref.from;
-    var $from = ref.$from;
-    var to = ref.to;
-    var empty = ref.empty;
+    const ref = state.selection;
+    const from = ref.from;
+    const $from = ref.$from;
+    const to = ref.to;
+    const empty = ref.empty;
     if (empty) { return type.isInSet(state.storedMarks || $from.marks()) }
     else { return state.doc.rangeHasMark(from, to, type) }
 }
