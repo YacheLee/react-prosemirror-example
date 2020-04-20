@@ -22,18 +22,17 @@ function Editor({value, onChange}) {
                 },
                 marks: {
                     strong: {
-                        toDOM: ()=>{
-                            return ['strong', 0];
-                        }
+                        toDOM: () => ['strong', 0]
                     },
                     em: {
                         parseDOM: [{tag: "i"}, {tag: "em"}, {style: "font-style=italic"}],
-                        toDOM: function toDOM() { return ['em', 0] }
+                        toDOM: () => ['em', 0]
                     },
                     u: {
-                        toDOM: ()=>{
-                            return ['u', 0];
-                        }
+                        toDOM: () => ['u', 0]
+                    },
+                    del: {
+                        toDOM: () => ['del', 0]
                     }
                 }
             });

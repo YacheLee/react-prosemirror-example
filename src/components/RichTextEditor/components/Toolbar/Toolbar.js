@@ -27,6 +27,9 @@ function Toolbar() {
             <button
                 style={{border: `solid ${isValue(editorView, 'u') ? "5px" : "1px"} blue`}}
                 onClick={e=>toggleType(e, editorView, 'u')}>U</button>
+            <button
+                style={{border: `solid ${isValue(editorView, 'del') ? "5px" : "1px"} blue`}}
+                onClick={e=>toggleType(e, editorView, 'del')}>D</button>
         </div>
     );
 }
