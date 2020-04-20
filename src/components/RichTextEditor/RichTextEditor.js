@@ -42,8 +42,6 @@ function RichTextEditor({value, onChange}) {
                     }
                 }
             });
-            console.log(_schema);
-
             const _editorState = EditorState.create({
                 schema: _schema,
                 doc: _schema.nodeFromJSON(value)
