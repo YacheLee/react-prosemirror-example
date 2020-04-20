@@ -14,7 +14,7 @@ function markActive(state, type) {
     else { return state.doc.rangeHasMark(from, to, type) }
 }
 
-function RichTextEditor() {
+function RichTextEditor({value}) {
     const [isLoading, setIsLoading] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const [editorState, setEditorState] = useState(null);
@@ -44,6 +44,7 @@ function RichTextEditor() {
             });
             const _editorState = EditorState.create({
                 schema: _schema,
+                doc: _schema.nodeFromJSON(value)
             })
             const _editorView = new EditorView(editor.current, {
                 state: _editorState,
