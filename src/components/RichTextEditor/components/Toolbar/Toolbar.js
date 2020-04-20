@@ -15,12 +15,6 @@ function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
-function isHeadingActive(editorView, level){
-    const schema = getSchema(editorView);
-    const command = setBlockType(schema.nodes.heading, {level});
-    return !command(editorView.state, null, editorView);
-}
-
 function getHeadingAttribute(editorView){
     const node = getTopLevelNode(editorView);
     if(!node){
@@ -60,34 +54,6 @@ function Toolbar() {
                 <option value={5}>Heading 5</option>
                 <option value={6}>Heading 6</option>
             </select>
-            <button style={{border: `solid ${getHeadingAttribute(editorView)} ${isHeadingActive(editorView, 1) ? "5px" : "1px"} blue`}} onClick={(e)=>{
-                e.preventDefault();
-                editorView.focus();
-
-                const schema = getSchema(editorView);
-                let command;
-                if(isHeadingActive(editorView, 1)){
-                    command = setBlockType(schema.nodes.paragraph);
-                }
-                else{
-                    command = setBlockType(schema.nodes.heading, {level: 1});
-                }
-                command(editorView.state, editorView.dispatch);
-            }}>H1</button>
-            <button style={{border: `solid ${getHeadingAttribute(editorView)} ${isHeadingActive(editorView, 2) ? "5px" : "1px"} blue`}} onClick={(e)=>{
-                e.preventDefault();
-                editorView.focus();
-
-                const schema = getSchema(editorView);
-                let command;
-                if(isHeadingActive(editorView, 2)){
-                    command = setBlockType(schema.nodes.paragraph);
-                }
-                else{
-                    command = setBlockType(schema.nodes.heading, {level: 2});
-                }
-                command(editorView.state, editorView.dispatch);
-            }}>H2</button>
             <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
             <button
                 style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}
