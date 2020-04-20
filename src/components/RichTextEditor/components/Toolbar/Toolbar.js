@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {setBlockType, toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {getSchema, getTopLevelNode, getType, markActive} from '../../utils';
+import {getActiveColor, getSchema, getTopLevelNode, getType, markActive} from '../../utils';
 
 function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -32,7 +32,7 @@ function Toolbar() {
 
     return (
         <div>
-            <select value={getHeadingAttribute(editorView)} readOnly={true} onChange={(e)=>{
+            <select value={getHeadingAttribute(editorView)} onChange={(e)=>{
                 e.preventDefault();
                 editorView.focus();
                 const schema = getSchema(editorView);
@@ -64,6 +64,8 @@ function Toolbar() {
             <button
                 style={{border: `solid ${isValue(editorView, 'del') ? "5px" : "1px"} blue`}}
                 onClick={e=>toggleType(e, editorView, 'del')}>D</button>
+            <button onClick={()=>{
+            }}>{getActiveColor(editorView)}</button>
         </div>
     );
 }
