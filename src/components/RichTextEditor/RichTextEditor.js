@@ -66,6 +66,7 @@ function RichTextEditor() {
                 <div className="ProseMirror-example-setup-style">
                     <button style={{border: `solid ${isActive ? "5px" : "1px"} blue`}} onClick={(e)=>{
                         e.preventDefault();
+                        editorView.focus()
                         const command = toggleMark(schema.marks.strong);
                         command(editorView.state, editorView.dispatch, editorView);
                     }}>B</button>
