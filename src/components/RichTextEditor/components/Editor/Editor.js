@@ -29,6 +29,11 @@ function Editor({value, onChange}) {
                     em: {
                         parseDOM: [{tag: "i"}, {tag: "em"}, {style: "font-style=italic"}],
                         toDOM: function toDOM() { return ['em', 0] }
+                    },
+                    u: {
+                        toDOM: ()=>{
+                            return ['u', 0];
+                        }
                     }
                 }
             });
