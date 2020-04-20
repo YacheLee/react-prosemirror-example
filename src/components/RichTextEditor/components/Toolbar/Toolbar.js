@@ -3,19 +3,27 @@ import {toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
 import {getType, markActive} from '../../utils';
 
+function isValue(editorView, type_name){
+    return !!markActive(editorView.state, getType(editorView, type_name));
+}
+
+function toggleType(e, editorView, type_name){
+    e.preventDefault();
+    editorView.focus()
+    const type = getType(editorView, type_name);
+    const command = toggleMark(type);
+    command(editorView.state, editorView.dispatch, editorView);
+}
+
 function Toolbar() {
     const {editorView} = useContext(EditorViewContext);
-    const type = getType(editorView, "strong");
-    const isActive = !!markActive(editorView.state, type);
 
     return (
         <div>
-            <button style={{border: `solid ${isActive ? "5px" : "1px"} blue`}} onClick={(e)=>{
-                e.preventDefault();
-                editorView.focus()
-                const command = toggleMark(type);
-                command(editorView.state, editorView.dispatch, editorView);
-            }}>B</button>
+            <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
+            <button
+                style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}
+                onClick={e=>toggleType(e, editorView, 'em')}>I</button>
         </div>
     );
 }
