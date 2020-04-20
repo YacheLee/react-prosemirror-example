@@ -1,4 +1,5 @@
 import React, {Fragment, useEffect, useRef, useState} from 'react';
+import PropTypes from 'prop-types';
 import {Schema} from 'prosemirror-model';
 import {EditorState} from "prosemirror-state"
 import {EditorView} from "prosemirror-view"
@@ -14,7 +15,7 @@ function markActive(state, type) {
     else { return state.doc.rangeHasMark(from, to, type) }
 }
 
-function RichTextEditor({value}) {
+function RichTextEditor({value, onChange}) {
     const [isLoading, setIsLoading] = useState(false);
     const [isActive, setIsActive] = useState(false);
     const [editorState, setEditorState] = useState(null);
@@ -82,5 +83,16 @@ function RichTextEditor({value}) {
         </Fragment>
     );
 }
+
+RichTextEditor.defaultProps = {
+    value: {
+        type: "doc",
+        content: []
+    }
+};
+
+RichTextEditor.propTypes = {
+    value: PropTypes.object
+};
 
 export default RichTextEditor;
