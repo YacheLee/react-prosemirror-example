@@ -1,3 +1,5 @@
+import {toggleMark} from 'prosemirror-commands';
+
 export function markActive(state, type) {
     const ref = state.selection;
     const from = ref.from;
@@ -58,4 +60,10 @@ export function getActiveColor(editorView) {
     return marksWithColor.length
         ? marksWithColor[0].attrs.color
         : "black";
+}
+
+export function changeColor(editorView, color){
+    const type = getType(editorView, 'textColor');
+    const command = toggleMark(type, {color});
+    command(editorView.state, editorView.dispatch, editorView);
 }
