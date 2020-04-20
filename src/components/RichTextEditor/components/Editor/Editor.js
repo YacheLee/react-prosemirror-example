@@ -65,7 +65,7 @@ function Editor({value, onChange}) {
     }, [editorView, setEditorView, value, onChange]);
 
     useEffect(() => {
-        init()
+        init();
     }, [init]);
 
     return (
