@@ -3,7 +3,7 @@ import RichTextEditor from './components/RichTextEditor';
 
 const defaultValue = {
     type: "doc",
-    content:[{"type":"paragraph","content":[{"type":"text","text":"中文測試"}]}]
+    content: [{"type":"heading","attrs":{"level":1},"content":[{"type":"text","text":"中文測試"}]}]
 };
 
 function App() {

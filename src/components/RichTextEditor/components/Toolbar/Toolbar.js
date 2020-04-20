@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {setBlockType, toggleMark} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
 import {getSchema, getType, markActive} from '../../utils';
@@ -17,6 +17,7 @@ function toggleType(e, editorView, type_name){
 
 function Toolbar() {
     const {editorView} = useContext(EditorViewContext);
+    const [isHeading, setIsHeading] = useState(true);
 
     return (
         <div>
@@ -24,7 +25,14 @@ function Toolbar() {
                 e.preventDefault();
                 editorView.focus();
                 const schema = getSchema(editorView);
-                const command = setBlockType(schema.nodes.heading, {level: 1});
+                let command;
+                if(isHeading){
+                    command = setBlockType(schema.nodes.paragraph);
+                }
+                else{
+                    command = setBlockType(schema.nodes.heading, {level: isHeading? 0: 1});
+                }
+                setIsHeading(!isHeading);
                 command(editorView.state, editorView.dispatch)
             }}>H</button>
             <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
