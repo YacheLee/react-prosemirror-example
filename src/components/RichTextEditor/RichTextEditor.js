@@ -55,6 +55,7 @@ function RichTextEditor({value, onChange}) {
                     _editorView.updateState(newState);
                     setEditorState(newState);
                     setIsActive(!!markActive(_editorView.state, _schema.marks.strong));
+                    onChange(newState.toJSON());
                 }}
             )
             setSchema(_schema);
@@ -88,11 +89,13 @@ RichTextEditor.defaultProps = {
     value: {
         type: "doc",
         content: []
-    }
+    },
+    onChange: ()=>{}
 };
 
 RichTextEditor.propTypes = {
-    value: PropTypes.object
+    value: PropTypes.object,
+    onChange: PropTypes.func
 };
 
 export default RichTextEditor;
