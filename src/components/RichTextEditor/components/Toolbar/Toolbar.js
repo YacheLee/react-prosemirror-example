@@ -34,12 +34,24 @@ function Toolbar() {
 
     return (
         <div className={classes.root} onMouseDown={e=>e.preventDefault()}>
-            <HeadingButton />
-            <BoldButton />
-            <ItalicButton />
-            <UnderlineButton />
-            <DelButton />
-            <TextColorButton />
+            <div className={classes.division}>
+                <HeadingButton />
+            </div>
+            <div className={classes.division}>
+                <BoldButton />
+            </div>
+            <div className={classes.division}>
+                <ItalicButton />
+            </div>
+            <div className={classes.division}>
+                <UnderlineButton />
+            </div>
+            <div className={classes.division}>
+                <DelButton />
+            </div>
+            <div className={classes.division}>
+                <TextColorButton />
+            </div>
         </div>
     );
 }

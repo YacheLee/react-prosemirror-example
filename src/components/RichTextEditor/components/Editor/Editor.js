@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback, useContext, useEffect, useRef} from 'react';
+import React, {useCallback, useContext, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Schema} from 'prosemirror-model';
 import {EditorState} from "prosemirror-state"
@@ -7,6 +7,7 @@ import {keymap} from "prosemirror-keymap";
 import {baseKeymap} from "prosemirror-commands";
 import {EditorView} from "prosemirror-view"
 import EditorViewContext from '../../contexts/EditorViewContext';
+import './prosemirror.css';
 
 function Editor({value, onChange}) {
     const {editorView, setEditorView} = useContext(EditorViewContext);
@@ -110,9 +111,7 @@ function Editor({value, onChange}) {
     }, [init]);
 
     return (
-        <Fragment>
-            <div style={{border: "solid 1px red"}} ref={editor} />
-        </Fragment>
+        <div ref={editor} />
     );
 }
 

@@ -19,7 +19,7 @@ const defaultValue = {"type":"doc","content":[
 function App() {
     const [value, setValue] = useState(defaultValue);
     return (
-        <div>
+        <div style={{padding: 10}}>
             <RichTextEditor value={value} onChange={(value)=>{
                 setValue(value);
             }} />
