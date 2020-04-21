@@ -1,37 +1,41 @@
 import React, {useContext} from 'react';
-import {setBlockType, toggleMark} from 'prosemirror-commands';
+import {createUseStyles} from 'react-jss';
+import {setBlockType} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {changeColor, getActiveColor, getSchema, getTopLevelNode, getType, markActive} from '../../utils';
+import {changeColor, getActiveColor, getHeadingAttribute, getSchema} from '../../utils';
+import BoldButton from './BoldButton';
+import ItalicButton from './ItalicButton';
+import UnderlineButton from './UnderlineButton';
+import DelButton from './DelButton';
 
-function isValue(editorView, type_name){
-    return !!markActive(editorView.state, getType(editorView, type_name));
-}
-
-function toggleType(e, editorView, type_name){
-    e.preventDefault();
-    editorView.focus()
-    const type = getType(editorView, type_name);
-    const command = toggleMark(type);
-    command(editorView.state, editorView.dispatch, editorView);
-}
-
-function getHeadingAttribute(editorView){
-    const node = getTopLevelNode(editorView);
-    if(!node){
-        return "";
+const useStyles = createUseStyles({
+    root: {
+        width: '100%',
+        flexWrap: "nowrap",
+        overflowX: "auto",
+        display: "flex",
+        flex: '0 0 auto',
+        flexShrink: 0,
+        padding: 0,
+    },
+    division: {
+        margin: 12,
+        width: 'auto',
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+        "&:hover": {
+            cursor: "pointer"
+        }
     }
-    const {type, attrs} = node;
-    if(type.name==='heading'){
-        return attrs.level;
-    }
-    return "";
-}
+});
 
 function Toolbar() {
+    const classes = useStyles();
     const {editorView} = useContext(EditorViewContext);
 
     return (
-        <div>
+        <div className={classes.root} onMouseDown={e=>e.preventDefault()}>
             <select value={getHeadingAttribute(editorView)} onChange={(e)=>{
                 e.preventDefault();
                 editorView.focus();
@@ -54,16 +58,10 @@ function Toolbar() {
                 <option value={5}>Heading 5</option>
                 <option value={6}>Heading 6</option>
             </select>
-            <button style={{border: `solid ${isValue(editorView, 'strong') ? "5px" : "1px"} blue`}} onClick={e=>toggleType(e, editorView, 'strong')}>B</button>
-            <button
-                style={{border: `solid ${isValue(editorView, 'em') ? "5px" : "1px"} blue`}}
-                onClick={e=>toggleType(e, editorView, 'em')}>I</button>
-            <button
-                style={{border: `solid ${isValue(editorView, 'u') ? "5px" : "1px"} blue`}}
-                onClick={e=>toggleType(e, editorView, 'u')}>U</button>
-            <button
-                style={{border: `solid ${isValue(editorView, 'del') ? "5px" : "1px"} blue`}}
-                onClick={e=>toggleType(e, editorView, 'del')}>D</button>
+            <BoldButton />
+            <ItalicButton />
+            <UnderlineButton />
+            <DelButton />
             <span>{getActiveColor(editorView)}</span>
             <button onClick={e=>{
                 e.preventDefault();

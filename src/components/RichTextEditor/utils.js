@@ -1,5 +1,9 @@
 import {toggleMark} from 'prosemirror-commands';
 
+export function isValue(editorView, type_name){
+    return !!markActive(editorView.state, getType(editorView, type_name));
+}
+
 export function markActive(state, type) {
     const ref = state.selection;
     const from = ref.from;
@@ -8,6 +12,26 @@ export function markActive(state, type) {
     const empty = ref.empty;
     if (empty) { return type.isInSet(state.storedMarks || $from.marks()) }
     else { return state.doc.rangeHasMark(from, to, type) }
+}
+
+export function toggleType(e, editorView, type_name){
+    e.preventDefault();
+    editorView.focus()
+    const type = getType(editorView, type_name);
+    const command = toggleMark(type);
+    command(editorView.state, editorView.dispatch, editorView);
+}
+
+export function getHeadingAttribute(editorView){
+    const node = getTopLevelNode(editorView);
+    if(!node){
+        return "";
+    }
+    const {type, attrs} = node;
+    if(type.name==='heading'){
+        return attrs.level;
+    }
+    return "";
 }
 
 export function getSchema(editorView){
