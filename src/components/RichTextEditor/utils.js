@@ -1,5 +1,6 @@
 import {toggleMark} from 'prosemirror-commands';
 import {HEADING_DEFAULT_TYPE} from './components/Toolbar/HeadingButton/types';
+import {AllSelection} from 'prosemirror-state';
 
 export function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -23,16 +24,40 @@ export function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
-export function getHeadingLevel(editorView){
-    const node = getTopLevelNode(editorView);
-    if(!node){
+export function getSelectedHeadingValue(nodes=[]){
+    const set = new Set(nodes.filter(node=>node.type.name==='heading').map(node => node.attrs.level));
+
+    if(set.size===1){
+        return set.values().next().value;
+    }
+    else{
         return HEADING_DEFAULT_TYPE;
     }
-    const {type, attrs} = node;
-    if(type.name==='heading'){
-        return String(attrs.level);
+}
+
+export function getHeadingLevel(editorView){
+    const {selection, tr} = editorView.state;
+    if(selection instanceof AllSelection){
+        const {from, to} = selection;
+        const blockNodes = [];
+        tr.doc.nodesBetween(tr.mapping.map(from), tr.mapping.map(to), function (node, pos) {
+            if(node.isBlock){
+                blockNodes.push(node);
+            }
+        });
+        return getSelectedHeadingValue(blockNodes);
     }
-    return HEADING_DEFAULT_TYPE;
+    else{
+        const topLevelNode = getTopLevelNode(editorView);
+        if(!topLevelNode){
+            return HEADING_DEFAULT_TYPE;
+        }
+        const {type, attrs} = topLevelNode;
+        if(type.name==='heading'){
+            return String(attrs.level);
+        }
+        return HEADING_DEFAULT_TYPE;
+    }
 }
 
 export function getSchema(editorView){
