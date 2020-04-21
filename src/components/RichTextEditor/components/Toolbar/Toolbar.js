@@ -2,11 +2,12 @@ import React, {useContext} from 'react';
 import {createUseStyles} from 'react-jss';
 import {setBlockType} from 'prosemirror-commands';
 import EditorViewContext from '../../contexts/EditorViewContext';
-import {changeColor, getActiveColor, getHeadingAttribute, getSchema} from '../../utils';
+import {getHeadingAttribute, getSchema} from '../../utils';
 import BoldButton from './BoldButton';
 import ItalicButton from './ItalicButton';
 import UnderlineButton from './UnderlineButton';
 import DelButton from './DelButton';
+import TextColorButton from './TextColorButton';
 
 const useStyles = createUseStyles({
     root: {
@@ -62,18 +63,7 @@ function Toolbar() {
             <ItalicButton />
             <UnderlineButton />
             <DelButton />
-            <span>{getActiveColor(editorView)}</span>
-            <button onClick={e=>{
-                e.preventDefault();
-                editorView.focus()
-                changeColor(editorView, 'blue')
-            }}>Blue</button>
-
-            <button onClick={e=>{
-                e.preventDefault();
-                editorView.focus()
-                changeColor(editorView, 'red')
-            }}>Red</button>
+            <TextColorButton />
         </div>
     );
 }
