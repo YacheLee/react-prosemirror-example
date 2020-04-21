@@ -12,6 +12,7 @@ const useStyles = createUseStyles({
     dropdownContent: {
         paddingTop: "5px",
         paddingLeft: "5px",
+        paddingRight: "5px",
         backgroundColor:"#f9f9f9",
         minWidth:"100px",
         minHeight:"200px",
