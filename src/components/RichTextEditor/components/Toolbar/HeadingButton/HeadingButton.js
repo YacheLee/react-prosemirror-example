@@ -6,7 +6,7 @@ import {ArrowDropDown} from "@material-ui/icons";
 import HeadingList from "./HeadingList";
 import {BLACK_COLOR} from '../../../config';
 import {EditorViewContext} from '../../../contexts';
-import {getHeadingAttribute, getSchema} from '../../../utils';
+import {getHeadingLevel, getSchema} from '../../../utils';
 import types, {HEADING_DEFAULT_TYPE} from './types';
 import {setBlockType} from 'prosemirror-commands';
 
@@ -45,7 +45,7 @@ function HeadingButton(){
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    const value = getHeadingAttribute(editorView);
+    const value = getHeadingLevel(editorView);
     const label = types[value];
     const classes = useStyles({disabled});
     const rootClassName = cn(classes.root, {[classes.enabled_hover]: !disabled, [classes.disabled_hover]: disabled});

@@ -23,7 +23,7 @@ export function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
-export function getHeadingAttribute(editorView){
+export function getHeadingLevel(editorView){
     const node = getTopLevelNode(editorView);
     if(!node){
         return HEADING_DEFAULT_TYPE;
