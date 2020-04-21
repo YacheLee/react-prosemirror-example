@@ -14,11 +14,9 @@ const useStyles = createUseStyles({
         display: "flex",
         alignContent: "center",
         justifyContent: "center",
-        color: ({disabled=false})=>{
-            return disabled ? "grey" : BLACK_COLOR;
-        },
+        color: BLACK_COLOR,
         "&:hover": {
-            cursor: "not-allowed"
+            cursor: "pointer"
         }
     },
     center: {
@@ -26,28 +24,17 @@ const useStyles = createUseStyles({
         alignItems: "center",
         justifyContent: "center"
     },
-    enabled_hover: {
-        "&:hover": {
-            cursor: "pointer"
-        }
-    },
-    disabled_hover: {
-        "&:hover": {
-            cursor: "not-allowed"
-        }
-    },
 });
 
 function HeadingButton(){
     const {editorView} = useContext(EditorViewContext);
-    const disabled = false;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
     const value = getHeading(editorView);
     const label = types[value];
-    const classes = useStyles({disabled});
-    const rootClassName = cn(classes.root, {[classes.enabled_hover]: !disabled, [classes.disabled_hover]: disabled});
+    const classes = useStyles();
+    const rootClassName = cn(classes.root);
 
     return <Fragment>
         <div className={rootClassName} onClick={({currentTarget}) => {
