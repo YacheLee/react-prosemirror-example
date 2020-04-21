@@ -48,7 +48,7 @@ function TextColorButton() {
             }}
         >
             <CompactPicker onChangeComplete={({hex: value}) => {
-                changeColor(editorView, value);
+                changeColor(editorView, value, editorView.state, editorView.dispatch);
                 setAnchorEl(null);
             }}/>
         </Popover>

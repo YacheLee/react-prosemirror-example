@@ -87,8 +87,27 @@ export function getActiveColor(editorView) {
         : "black";
 }
 
-export function changeColor(editorView, color){
+function removeColor(){ return (state, dispatch) =>{
+    let {schema, selection, tr} = state;
+    const textColor = schema.marks.textColor;
+    const {from, to, $cursor} = selection;
+    if ($cursor) {
+        tr = state.tr.removeStoredMark(textColor);
+    }
+    else {
+        tr = state.tr.removeMark(from, to, textColor);
+    }
+    dispatch(tr.scrollIntoView());
+    return true;
+};}
+
+export function toggleColor(editorView, color){
     const type = getType(editorView, 'textColor');
     const command = toggleMark(type, {color});
     command(editorView.state, editorView.dispatch, editorView);
+}
+
+export function changeColor(editorView, color, state, dispatch) {
+    removeColor()(state, dispatch);
+    toggleColor(editorView, color);
 }
