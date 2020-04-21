@@ -68,8 +68,8 @@ function Editor({value, onChange}) {
                         parseDOM: [
                             {
                                 style: 'color',
-                                getAttrs: function (value) {
-                                    return {color: value};
+                                getAttrs: (color) =>{
+                                    return {color};
                                 },
                             },
                         ],
