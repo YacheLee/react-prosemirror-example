@@ -6,9 +6,8 @@ import {ArrowDropDown} from "@material-ui/icons";
 import HeadingList from "./HeadingList";
 import {BLACK_COLOR} from '../../../config';
 import {EditorViewContext} from '../../../contexts';
-import {getHeadingValue, getSchema} from '../../../utils';
-import types, {HEADING_DEFAULT_TYPE} from './types';
-import {setBlockType} from 'prosemirror-commands';
+import {changeHeading, getHeading} from '../../../utils';
+import types from './types';
 
 const useStyles = createUseStyles({
     root: {
@@ -45,7 +44,7 @@ function HeadingButton(){
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    const value = getHeadingValue(editorView);
+    const value = getHeading(editorView);
     const label = types[value];
     const classes = useStyles({disabled});
     const rootClassName = cn(classes.root, {[classes.enabled_hover]: !disabled, [classes.disabled_hover]: disabled});
@@ -77,19 +76,7 @@ function HeadingButton(){
         >
             <div className={classes.popover}>
                 <HeadingList value={value} onClick={(e, level) => {
-                    e.preventDefault();
-                    editorView.focus();
-                    const schema = getSchema(editorView);
-
-                    let command;
-                    if(level===HEADING_DEFAULT_TYPE){
-                        command = setBlockType(schema.nodes.paragraph);
-                    }
-                    else{
-                        command = setBlockType(schema.nodes.heading, {level});
-                    }
-                    command(editorView.state, editorView.dispatch);
-
+                    changeHeading(e, editorView, level);
                     setAnchorEl(null);
                 }} />
             </div>

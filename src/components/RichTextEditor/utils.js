@@ -1,4 +1,4 @@
-import {toggleMark} from 'prosemirror-commands';
+import {setBlockType, toggleMark} from 'prosemirror-commands';
 import {HEADING_DEFAULT_TYPE} from './components/Toolbar/HeadingButton/types';
 import {AllSelection} from 'prosemirror-state';
 
@@ -35,7 +35,7 @@ export function getSelectedHeadingValue(nodes=[]){
     }
 }
 
-export function getHeadingValue(editorView){
+export function getHeading(editorView){
     const {selection, tr} = editorView.state;
     if(selection instanceof AllSelection){
         const {from, to} = selection;
@@ -58,6 +58,21 @@ export function getHeadingValue(editorView){
         }
         return HEADING_DEFAULT_TYPE;
     }
+}
+
+export function changeHeading(e, editorView, level){
+    e.preventDefault();
+    editorView.focus();
+    const schema = getSchema(editorView);
+
+    let command;
+    if(level===HEADING_DEFAULT_TYPE){
+        command = setBlockType(schema.nodes.paragraph);
+    }
+    else{
+        command = setBlockType(schema.nodes.heading, {level});
+    }
+    command(editorView.state, editorView.dispatch);
 }
 
 export function getSchema(editorView){
