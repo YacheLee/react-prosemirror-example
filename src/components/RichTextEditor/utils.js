@@ -1,6 +1,5 @@
 import {setBlockType, toggleMark} from 'prosemirror-commands';
 import {HEADING_DEFAULT_TYPE} from './components/Toolbar/HeadingButton/types';
-import {AllSelection} from 'prosemirror-state';
 
 export function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -24,8 +23,8 @@ export function toggleType(e, editorView, type_name){
     command(editorView.state, editorView.dispatch, editorView);
 }
 
-export function getSelectedHeadingValue(nodes=[]){
-    const set = new Set(nodes.filter(node=>node.type.name==='heading').map(node => node.attrs.level));
+export function getSelectedHeadingValue(headingNodes=[]){
+    const set = new Set(headingNodes.map(node => node.attrs.level));
 
     if(set.size===1){
         return set.values().next().value;
@@ -37,25 +36,22 @@ export function getSelectedHeadingValue(nodes=[]){
 
 export function getHeading(editorView){
     const {selection, tr} = editorView.state;
-    if(selection instanceof AllSelection){
-        const {from, to} = selection;
-        const blockNodes = [];
-        tr.doc.nodesBetween(tr.mapping.map(from), tr.mapping.map(to), function (node, pos) {
-            if(node.isBlock){
-                blockNodes.push(node);
+    const {from, to} = selection;
+    const blockNodes = [];
+    const headingNodes = [];
+    tr.doc.nodesBetween(tr.mapping.map(from), tr.mapping.map(to), function (node) {
+        if(node.isBlock){
+            blockNodes.push(node);
+            if(node.type.name==='heading'){
+                headingNodes.push(node);
             }
-        });
-        return getSelectedHeadingValue(blockNodes);
+        }
+    });
+    //if all the selected nodes are heading
+    if(blockNodes.length === headingNodes.length){
+        return getSelectedHeadingValue(headingNodes);
     }
     else{
-        const topLevelNode = getTopLevelNode(editorView);
-        if(!topLevelNode){
-            return HEADING_DEFAULT_TYPE;
-        }
-        const {type, attrs} = topLevelNode;
-        if(type.name==='heading'){
-            return String(attrs.level);
-        }
         return HEADING_DEFAULT_TYPE;
     }
 }
