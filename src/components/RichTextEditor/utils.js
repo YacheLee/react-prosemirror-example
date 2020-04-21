@@ -35,7 +35,7 @@ export function getSelectedHeadingValue(nodes=[]){
     }
 }
 
-export function getHeadingLevel(editorView){
+export function getHeadingValue(editorView){
     const {selection, tr} = editorView.state;
     if(selection instanceof AllSelection){
         const {from, to} = selection;
