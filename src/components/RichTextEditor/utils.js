@@ -1,4 +1,5 @@
 import {toggleMark} from 'prosemirror-commands';
+import {HEADING_DEFAULT_TYPE} from './components/Toolbar/HeadingButton/types';
 
 export function isValue(editorView, type_name){
     return !!markActive(editorView.state, getType(editorView, type_name));
@@ -25,13 +26,13 @@ export function toggleType(e, editorView, type_name){
 export function getHeadingAttribute(editorView){
     const node = getTopLevelNode(editorView);
     if(!node){
-        return "";
+        return HEADING_DEFAULT_TYPE;
     }
     const {type, attrs} = node;
     if(type.name==='heading'){
-        return attrs.level;
+        return String(attrs.level);
     }
-    return "";
+    return HEADING_DEFAULT_TYPE;
 }
 
 export function getSchema(editorView){
