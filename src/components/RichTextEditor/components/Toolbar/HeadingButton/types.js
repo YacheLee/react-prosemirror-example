@@ -1,4 +1,4 @@
-export const HEADING_DEFAULT_TYPE = "";
+export const HEADING_DEFAULT_TYPE = "0";
 export const HEADING_ONE_TYPE = "1";
 export const HEADING_TWO_TYPE = "2";
 export const HEADING_THREE_TYPE = "3";
