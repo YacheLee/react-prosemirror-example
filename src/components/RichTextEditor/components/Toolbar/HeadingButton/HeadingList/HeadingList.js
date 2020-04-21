@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 import {createUseStyles} from 'react-jss';
 import {GREY_COLOR} from "../../../../config";
-import types from '../types';
+import types, {HEADING_DEFAULT_TYPE} from '../types';
 
 const FONT_SIZE = 20;
 
@@ -64,12 +64,12 @@ const HeadingList = ({onClick, value}) => {
 
 HeadingList.defaultProps = {
     onClick: ()=>{},
-    value: ""
+    value: HEADING_DEFAULT_TYPE
 };
 
 HeadingList.propTypes = {
     onClick: PropTypes.func,
-    value: PropTypes.oneOf(_.keys(types)),
+    value: PropTypes.oneOf(_.keys(types).map(e=>parseInt(e))),
 };
 
 export default HeadingList;
