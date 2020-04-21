@@ -4,7 +4,7 @@ import {createUseStyles} from 'react-jss';
 import Popover from '@material-ui/core/Popover';
 import AButton from './AButton';
 import {EditorViewContext} from '../../../contexts';
-import {changeColor, getActiveColor} from '../../../utils';
+import {changeColor, getColor} from '../../../utils';
 
 const useStyles = createUseStyles({
     root: {
@@ -20,7 +20,7 @@ const useStyles = createUseStyles({
 function TextColorButton() {
     const classes = useStyles();
     const {editorView} = useContext(EditorViewContext);
-    const color = getActiveColor(editorView);
+    const color = getColor(editorView);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;

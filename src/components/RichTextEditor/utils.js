@@ -51,7 +51,7 @@ export function getTopLevelNode(editorView){
     return editorView.state.selection.$from.node(1);
 }
 
-export function getActiveColor(editorView) {
+export function getColor(editorView) {
     const state = editorView.state;
     let {$from, $to, $cursor} = state.selection;
     const textColor = state.schema.marks.textColor;
