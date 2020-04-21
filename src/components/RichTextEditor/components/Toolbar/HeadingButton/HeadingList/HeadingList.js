@@ -32,13 +32,12 @@ const useStyles = createUseStyles({
     }
 });
 
-function Head({fontSize, hover, onClick, level, label}) {
+function Head({fontSize, hover, onClick, label}) {
     const classes = useStyles();
 
     return <div
         className={`${cn(classes.dropdownList, {hover})}`}
-        style={{fontSize}} onClick={(e) => onClick(e, level)}
-    >
+        style={{fontSize}} onClick={onClick}>
         {label}
     </div>
 }
@@ -46,24 +45,21 @@ function Head({fontSize, hover, onClick, level, label}) {
 const HeadingList = ({onClick, value}) => {
     const classes = useStyles();
 
-    return (
-        <div className={classes.dropdownContent}>
-            {_.keys(types).map((level, index)=>{
-                const label = types[level];
-                const hover = level === value;
-                const fontSize = FONT_SIZE - (2 * index);
+    return <div className={classes.dropdownContent}>
+        {_.keys(types).map((level, index)=>{
+            const label = types[level];
+            const hover = level === value;
+            const fontSize = FONT_SIZE - (2 * index);
 
-                return <Head
-                    key={index}
-                    fontSize={fontSize}
-                    hover={hover}
-                    level={level}
-                    label={label}
-                    onClick={onClick}
-                />
-            })}
-        </div>
-    );
+            return <Head
+                key={index}
+                label={label}
+                fontSize={fontSize}
+                hover={hover}
+                onClick={()=> onClick(level) }
+            />
+        })}
+    </div>
 };
 
 HeadingList.defaultProps = {

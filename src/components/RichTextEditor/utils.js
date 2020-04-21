@@ -56,8 +56,7 @@ export function getHeading(editorView){
     }
 }
 
-export function changeHeading(e, editorView, level){
-    e.preventDefault();
+export function changeHeading(editorView, level){
     editorView.focus();
     const schema = getSchema(editorView);
 

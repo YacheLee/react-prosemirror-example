@@ -12,8 +12,9 @@ const defaultValue = [
             }
         ]
     },
-    {"type":"heading","attrs":{"level":"1"},"content":[{"type":"text","text":"中文"}]},
-    {"type":"heading","attrs":{"level":"2"},"content":[{"type":"text","text":"測試"}]},{"type":"paragraph","content":[{"type":"text","text":"asdadddddasda"}]}
+    {"type":"heading","attrs":{"level":1},"content":[{"type":"text","text":"中文"}]},
+    {"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"測試"}]},
+    {"type":"paragraph","content":[{"type":"text","text":"asdadddddasda"}]}
 ];
 
 function App() {

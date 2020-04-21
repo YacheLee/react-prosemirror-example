@@ -60,8 +60,8 @@ function HeadingButton(){
             }}
         >
             <div className={classes.popover}>
-                <HeadingList value={value} onClick={(e, level) => {
-                    changeHeading(e, editorView, level);
+                <HeadingList value={value} onClick={(level) => {
+                    changeHeading(editorView, level);
                     setAnchorEl(null);
                 }} />
             </div>
