@@ -51,9 +51,7 @@ function HeadingButton(){
 
     return <Fragment>
         <div className={rootClassName} onClick={({currentTarget}) => {
-            if(!disabled){
-                setAnchorEl(currentTarget);
-            }
+            setAnchorEl(currentTarget);
         }}>
             <span className={classes.center}>{label}</span>
             <span className={classes.center}><ArrowDropDown /></span>
