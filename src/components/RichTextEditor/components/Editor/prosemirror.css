@@ -1,5 +1,6 @@
 .ProseMirror {
-  position: relative;
+  	position: relative;
+	min-height: 19px;
 }
 
 .ProseMirror-focused{
