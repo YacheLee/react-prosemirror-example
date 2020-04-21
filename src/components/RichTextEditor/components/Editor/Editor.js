@@ -31,12 +31,12 @@ function Editor({value, onChange}) {
                         parseDOM: [
                             {
                                 tag: "h1",
-                                attrs: {level: 1}},
-                            {tag: "h2", attrs: {level: 2}},
-                            {tag: "h3", attrs: {level: 3}},
-                            {tag: "h4", attrs: {level: 4}},
-                            {tag: "h5", attrs: {level: 5}},
-                            {tag: "h6", attrs: {level: 6}}
+                                attrs: {level: "1"}},
+                            {tag: "h2", attrs: {level: "2"}},
+                            {tag: "h3", attrs: {level: "3"}},
+                            {tag: "h4", attrs: {level: "4"}},
+                            {tag: "h5", attrs: {level: "5"}},
+                            {tag: "h6", attrs: {level: "6"}}
                         ],
                         toDOM(node) { return ["h" + node.attrs.level, 0] }
                     },
@@ -86,7 +86,10 @@ function Editor({value, onChange}) {
             });
             const editorState = EditorState.create({
                 schema,
-                doc: schema.nodeFromJSON(value),
+                doc: schema.nodeFromJSON({
+                    type: "doc",
+                    content: value
+                }),
                 plugins: [
                     history(),
                     keymap({'Mod-z': undo, 'Mod-y': redo}),
@@ -99,7 +102,7 @@ function Editor({value, onChange}) {
                 dispatchTransaction(transaction){
                     const newState = editorView.state.apply(transaction);
                     editorView.updateState(newState);
-                    onChange(newState.toJSON().doc);
+                    onChange(newState.toJSON().doc.content);
                 }}
             )
             setEditorView(editorView);
@@ -116,15 +119,12 @@ function Editor({value, onChange}) {
 }
 
 Editor.defaultProps = {
-    value: {
-        type: "doc",
-        content: []
-    },
+    value: [],
     onChange: ()=>{}
 };
 
 Editor.propTypes = {
-    value: PropTypes.object,
+    value: PropTypes.array,
     onChange: PropTypes.func
 };
 

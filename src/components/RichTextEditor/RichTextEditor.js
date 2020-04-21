@@ -31,15 +31,12 @@ function RichTextEditor({value, onChange}) {
 }
 
 RichTextEditor.defaultProps = {
-    value: {
-        type: "doc",
-        content: []
-    },
+    value: [],
     onChange: ()=>{}
 };
 
 RichTextEditor.propTypes = {
-    value: PropTypes.object,
+    value: PropTypes.array,
     onChange: PropTypes.func
 };
 
