@@ -6,7 +6,7 @@ import {isValue, toggleType} from '../../../utils';
 
 function DelButton(){
     const {editorView} = useContext(EditorViewContext);
-    const isActive = isValue(editorView, 'u');
+    const isActive = isValue(editorView, 'del');
 
     return <ToolbarButton component={StrikethroughIcon} isActive={isActive} onClick={e=>{
         toggleType(e, editorView, 'del');
